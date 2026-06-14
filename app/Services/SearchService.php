@@ -46,14 +46,16 @@ class SearchService
         $queryTokens = $preprocessResult['stemmed'];
 
         if (empty($queryTokens)) {
-            return [
-                'results'        => [],
-                'query'          => $query,
-                'query_tokens'   => [],
-                'result_count'   => 0,
-                'execution_time' => 0,
-            ];
-        }
+    return [
+        'results'           => [],
+        'query'             => $query,
+        'query_tokens'      => [],
+        'query_vector'      => [],
+        'result_count'      => 0,
+        'execution_time'    => 0,
+        'preprocess_steps'  => $preprocessResult,
+    ];
+}
 
         // ================================================
         // TAHAP 2: Hitung Vektor TF-IDF Query
@@ -61,14 +63,16 @@ class SearchService
         $queryVector = $this->tfIdfService->computeQueryVector($queryTokens);
 
         if (empty($queryVector)) {
-            return [
-                'results'        => [],
-                'query'          => $query,
-                'query_tokens'   => $queryTokens,
-                'result_count'   => 0,
-                'execution_time' => 0,
-            ];
-        }
+    return [
+        'results'           => [],
+        'query'             => $query,
+        'query_tokens'      => $queryTokens,
+        'query_vector'      => [],
+        'result_count'      => 0,
+        'execution_time'    => 0,
+        'preprocess_steps'  => $preprocessResult,
+    ];
+}
 
         // ================================================
         // TAHAP 3: Ambil semua vektor dokumen
@@ -76,14 +80,16 @@ class SearchService
         $documentVectors = $this->tfIdfService->getAllDocumentVectors();
 
         if (empty($documentVectors)) {
-            return [
-                'results'        => [],
-                'query'          => $query,
-                'query_tokens'   => $queryTokens,
-                'result_count'   => 0,
-                'execution_time' => 0,
-            ];
-        }
+    return [
+        'results'           => [],
+        'query'             => $query,
+        'query_tokens'      => $queryTokens,
+        'query_vector'      => $queryVector,
+        'result_count'      => 0,
+        'execution_time'    => 0,
+        'preprocess_steps'  => $preprocessResult,
+    ];
+}
 
         // ================================================
         // TAHAP 4: Hitung Cosine Similarity untuk setiap dokumen
